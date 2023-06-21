@@ -1,0 +1,16 @@
+.login__input {
+    border: none;
+    border-bottom: 2px solid #CCCCCC;
+    background-color: #000000;
+    min-height: 28px;
+    color:#ffffff;
+    outline:none;
+}
+
+.login__input:not(:first-child) {
+    margin-top: 30px;
+}
+
+.login__input:first-child {
+    margin-top: 50px;
+}

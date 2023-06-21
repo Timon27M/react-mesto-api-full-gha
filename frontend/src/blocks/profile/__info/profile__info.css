@@ -1,0 +1,11 @@
+.profile__info {
+    margin-left: 30px;
+    margin-right: auto;
+  }
+
+  @media screen and (max-width: 685px) {
+    .profile__info {
+      margin: 0;
+      text-align: center;
+    }
+  }

@@ -1,0 +1,10 @@
+.element__info {
+  padding-top: 25px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 282px;
+  height: 80px;
+  position: absolute;
+  bottom: 0;
+}
