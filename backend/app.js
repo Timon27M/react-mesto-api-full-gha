@@ -3,6 +3,7 @@ const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const { errors } = require('celebrate');
 const auth = require('./middlewares/auth');
+const cors = require('./middlewares/cors');
 const { login, createUser } = require('./controllers/users');
 const {
   validatorLogin,
@@ -21,6 +22,8 @@ const { PORT = 3000 } = process.env;
 const app = express();
 
 app.use(bodyParser.json());
+app.use(cors);
+
 app.use(requestLogger);
 
 app.post('/signin', validatorLogin, login);
