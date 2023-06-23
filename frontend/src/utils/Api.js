@@ -83,7 +83,7 @@ class Api {
 const api = new Api({
   baseUrl: "https://api.tim27.nomoreparties.sbs",
   headers: {
-    Authorization: `${localStorage.getItem('token')}`,
+    Authorization: `Bearer ${localStorage.getItem('token')}`,
     "Content-Type": "application/json",
   },
 });
