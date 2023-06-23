@@ -106,6 +106,7 @@ function App() {
       .then((res) => {
         console.log(res);
         localStorage.setItem("jwt", res.token);
+        console.log(localStorage.getItem('jwt'))
         setIsLoggedIn(true);
         navigate("/", { replace: true });
       })
