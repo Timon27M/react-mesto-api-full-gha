@@ -29,7 +29,10 @@ class Api {
   setUserInfo(userObj) {
     return fetch(this._baseUrl + "/users/me", {
       method: "PATCH",
-      headers: this._headers,
+      headers: {
+        Authorization: `${localStorage.getItem('jwt')}`,
+        "Content-Type": "application/json",
+      },
       body: JSON.stringify({
         name: userObj.name,
         about: userObj.about,
