@@ -83,6 +83,7 @@ class Api {
 const api = new Api({
   baseUrl: "https://api.tim27.nomoreparties.sbs",
   headers: {
+    authorization: "85ee4dcc-2dd3-4827-a094-52d29fa5c5eb",
     "Content-Type": "application/json",
   },
 });
