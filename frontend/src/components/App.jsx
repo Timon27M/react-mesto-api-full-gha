@@ -237,7 +237,7 @@ function App() {
           email={email}
         />
         <Routes>
-          <Route
+          {/* <Route
             path="/"
             element={
               <ProtectedRoute
@@ -252,7 +252,7 @@ function App() {
                 onCardDelete={handleCardDelete}
               />
             }
-          />
+          /> */}
           <Route
             path="/sign-up"
             element={<Register registerAuth={registerAuth} />}
