@@ -38,7 +38,7 @@ function Main(props) {
           type="button"
         />
       </section>
-      {/* <section className="elements">
+      <section className="elements">
         {props.cards.map((card) => {
           return (
             <Card
@@ -55,7 +55,7 @@ function Main(props) {
             />
           );
         })}
-      </section> */}
+      </section>
     </main>
   );
 }
