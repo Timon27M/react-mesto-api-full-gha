@@ -83,6 +83,7 @@ class Api {
 const api = new Api({
   baseUrl: "https://api.tim27.nomoreparties.sbs",
   headers: {
+    authorization: `Bearer ${localStorage.getItem('jwt')}`,
     "Content-Type": "application/json",
   },
 });
