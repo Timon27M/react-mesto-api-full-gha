@@ -48,6 +48,6 @@ class Auth {
   }
 }
 
-const auth = new Auth("https://auth.nomoreparties.co");
+const auth = new Auth("https://api.tim27.nomoreparties.sbs");
 
 export default auth;
