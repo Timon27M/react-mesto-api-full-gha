@@ -34,34 +34,29 @@ function App() {
 
   const navigate = useNavigate();
 
-  // useEffect для получения профиля при загрузке
-  useEffect(() => {
-    api
-      .getProfileInfo()
-      .then((res) => {
-        setCurrentUser(res);
-      })
-      .catch((err) => {
-        console.log(err); // выведем ошибку в консоль
-      });
-  }, []);
+  // // useEffect для получения профиля при загрузке
+  // useEffect(() => {
+  //   api
+  //     .getProfileInfo()
+  //     .then((res) => {
+  //       setCurrentUser(res);
+  //     })
+  //     .catch((err) => {
+  //       console.log(err); // выведем ошибку в консоль
+  //     });
+  // }, []);
 
-  // useEffect для получения карточек при загрузке
-  useEffect(() => {
-    api
-      .getInitialCards()
-      .then((res) => {
-        setCards(res);
-      })
-      .catch((err) => {
-        console.log(err); // выведем ошибку в консоль
-      });
-  }, []);
-
-  // useEffect для проверки токена
-  useEffect(() => {
-    checkToken();
-  }, []);
+  // // useEffect для получения карточек при загрузке
+  // useEffect(() => {
+  //   api
+  //     .getInitialCards()
+  //     .then((res) => {
+  //       setCards(res);
+  //     })
+  //     .catch((err) => {
+  //       console.log(err); // выведем ошибку в консоль
+  //     });
+  // }, []);
 
   // функция получения проверки
   function checkToken() {
@@ -80,6 +75,11 @@ function App() {
         });
     }
   }
+
+  // useEffect для проверки токена
+  useEffect(() => {
+    checkToken();
+  }, []);
 
   // функция регистрации (отправка данных на сервер)
   function registerAuth(email, password) {
@@ -117,6 +117,20 @@ function App() {
         setEmail(email);
       });
   }
+
+  useEffect(() => {
+    if (isLoggedIn === true) {
+      Promise.all([api.getProfileInfo(), api.getInitialCards()])
+        .then(([user, cards]) => {
+          setCurrentUser(user);
+          setCards(cards.reverse());
+        })
+        .catch((err) => {
+          closeAllPopups();
+          console.log(err);
+        });
+    }
+  }, [isLoggedIn]);
 
   // функции изменения стейта
   function handleCardClick(card) {
