@@ -122,6 +122,8 @@ function App() {
     if (isLoggedIn === true) {
       Promise.all([api.getProfileInfo(), api.getInitialCards()])
         .then(([user, cards]) => {
+          console.log(user);
+          console.log(cards);
           setCurrentUser(user);
           setCards(cards.reverse());
         })
