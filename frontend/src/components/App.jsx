@@ -241,7 +241,7 @@ function App() {
             path="/"
             element={
               <ProtectedRoute
-                element={<Main cards={cards}/>}
+                element={Main}
                 isLoggedIn={isLoggedIn}
                 onEditAvatar={handleEditAvatarClick}
                 onEditProfile={handleEditProfileClick}
