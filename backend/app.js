@@ -1,3 +1,4 @@
+require('dotenv').config();
 const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
@@ -16,7 +17,6 @@ const { requestLogger, errorLogger } = require('./middlewares/logger');
 
 const routesUser = require('./routes/users');
 const routesCard = require('./routes/cards');
-require('dotenv').config();
 
 const { PORT = 3000 } = process.env;
 
