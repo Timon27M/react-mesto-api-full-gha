@@ -5,12 +5,12 @@
   
 Пожалуйста, прикрепите в это описание ссылку на сайт, размещенный на Яндекс.Облаке.
 
-Адрес репозитория: https://github.com/...
+Адрес репозитория: https://github.com/Timon27M/react-mesto-api-full-gha
 
 ## Ссылки на проект
 
-IP-адрес x.x.x.x
+IP-адрес 84.252.142.80
 
-Frontend https://...
+Frontend https://tim27.nomoreparties.sbs/
 
-Backend https://...
+Backend https://api.tim27.nomoreparties.sbs/
