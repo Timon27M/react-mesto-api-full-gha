@@ -51,45 +51,13 @@ function App() {
         });
     }
   }, []);
-  
-  // // useEffect для проверки токена
-  // useEffect(() => {
-  //   checkToken();
-  // }, []);
-
-  // // useEffect для получения профиля при загрузке
-  // useEffect(() => {
-  //   api
-  //     .getProfileInfo()
-  //     .then((res) => {
-  //       console.log(res.user)
-  //       setCurrentUser(res.user);
-  //     })
-  //     .catch((err) => {
-  //       console.log(err); // выведем ошибку в консоль
-  //     });
-  //   }, []);
-    
-  //   // useEffect для получения карточек при загрузке
-  //   useEffect(() => {
-  //     api
-  //     .getInitialCards()
-  //     .then((res) => {
-  //       console.log(res.cards)
-  //       setCards(res.cards);
-  //     })
-  //     .catch((err) => {
-  //       console.log(err); // выведем ошибку в консоль
-  //     });
-  //   }, []);
     
   useEffect(() => {
     if (isLoggedIn === true) {
       Promise.all([api.getProfileInfo(), api.getInitialCards()])
         .then(([user, cards]) => {
-          console.log(user.user);
           setCurrentUser(user.user);
-          setCards(cards.cards);
+          setCards(cards.cards.reverse());
         })
         .catch((err) => {
           closeAllPopups();
@@ -122,9 +90,7 @@ function App() {
     auth
       .login(email, password)
       .then((res) => {
-        console.log(res);
         localStorage.setItem("jwt", res.token);
-        console.log(localStorage.getItem('jwt'))
         setIsLoggedIn(true);
         navigate("/", { replace: true });
       })
@@ -229,7 +195,6 @@ function App() {
       .setUserAvatar(objUserAvatar)
       .then((newUserAvatar) => {
         setCurrentUser((user) => {
-          console.log(newUserAvatar)
           user.avatar = newUserAvatar.avatar;
           return user;
         });
