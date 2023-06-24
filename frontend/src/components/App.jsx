@@ -31,55 +31,73 @@ function App() {
   const [isInfoTooltipOpen, setIsInfoTooltipOpen] = useState(false);
   const [infoTooltipText, setInfoTooltipText] = useState("");
   const [infoTooltipLink, setInfoTooltipLink] = useState("");
-
+  
   const navigate = useNavigate();
-
-  // useEffect для получения профиля при загрузке
-  useEffect(() => {
-    api
-      .getProfileInfo()
-      .then((res) => {
-        setCurrentUser(res.user);
-      })
-      .catch((err) => {
-        console.log(err); // выведем ошибку в консоль
-      });
-  }, []);
-
-  // useEffect для получения карточек при загрузке
-  useEffect(() => {
-    api
-      .getInitialCards()
-      .then((res) => {
-        setCards(res.cards);
-      })
-      .catch((err) => {
-        console.log(err); // выведем ошибку в консоль
-      });
-  }, []);
-
+  
   // функция получения проверки
-  function checkToken() {
-    const jwt = localStorage.getItem("token");
+  useEffect(() => {
+    const jwt = localStorage.getItem("jwt");
 
     if (jwt) {
       auth
         .getUserInfo(jwt)
         .then((res) => {
+          console.log(res);
           setIsLoggedIn(true);
-          setEmail(res.data.email);
+          setEmail(res.user.email);
           navigate("/", { replace: true });
         })
         .catch((err) => {
           console.log(err); // выведем ошибку в консоль
         });
     }
-  }
-
-  // useEffect для проверки токена
-  useEffect(() => {
-    checkToken();
   }, []);
+  
+  // // useEffect для проверки токена
+  // useEffect(() => {
+  //   checkToken();
+  // }, []);
+
+  // // useEffect для получения профиля при загрузке
+  // useEffect(() => {
+  //   api
+  //     .getProfileInfo()
+  //     .then((res) => {
+  //       console.log(res.user)
+  //       setCurrentUser(res.user);
+  //     })
+  //     .catch((err) => {
+  //       console.log(err); // выведем ошибку в консоль
+  //     });
+  //   }, []);
+    
+  //   // useEffect для получения карточек при загрузке
+  //   useEffect(() => {
+  //     api
+  //     .getInitialCards()
+  //     .then((res) => {
+  //       console.log(res.cards)
+  //       setCards(res.cards);
+  //     })
+  //     .catch((err) => {
+  //       console.log(err); // выведем ошибку в консоль
+  //     });
+  //   }, []);
+    
+  useEffect(() => {
+    if (isLoggedIn === true) {
+      Promise.all([api.getProfileInfo(), api.getInitialCards()])
+        .then(([user, cards]) => {
+          setCurrentUser(user.user);
+          setCards(cards.cards);
+        })
+        .catch((err) => {
+          closeAllPopups();
+          console.log(err)
+        });
+    }
+  }, [isLoggedIn]);
+
 
   // функция регистрации (отправка данных на сервер)
   function registerAuth(email, password) {
@@ -143,7 +161,7 @@ function App() {
   // функция добавления и снятия лайка карточки
   function handleCardLike(card) {
     // Снова проверяем, есть ли уже лайк на этой карточке
-    const isLiked = card.likes.some((i) => i._id === currentUser._id);
+    const isLiked = card.likes.some((i) => i === currentUser._id);
 
     // Отправляем запрос в API и получаем обновлённые данные карточки
     if (!isLiked) {
@@ -151,14 +169,13 @@ function App() {
         .likeCard(card._id)
         .then((newCard) => {
           setCards((state) =>
-            state.map((c) => (c._id === card._id ? newCard : c))
-          );
-        })
+          state.map((c) => (c._id === card._id ? newCard : c)))
+       })
         .catch((err) => {
           console.log(err);
         });
-    } else {
-      api
+      } else {
+        api
         .disLikeCard(card._id)
         .then((newCard) => {
           setCards((state) =>

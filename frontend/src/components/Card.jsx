@@ -13,7 +13,7 @@ const isOwn = props.cardId === currentUser._id;
 
 
 // Определяем, есть ли у карточки лайк, поставленный текущим пользователем
-const isLiked = props.likes.some(i => i._id === currentUser._id);
+const isLiked = props.likes.some(i => i === currentUser._id);
 
 
 // Создаём переменную, которую после зададим в `className` для кнопки лайка
@@ -45,7 +45,6 @@ function handleDeleteCardClick() {
           <p className="element__like-number">{props.likeNumber}</p>
         </div>
       </div>
-      {/* <button type="button" className="element__button-delete" /> */}
       {isOwn && <button className='element__button-delete' type="button" onClick={handleDeleteCardClick} />} 
     </article>
   );

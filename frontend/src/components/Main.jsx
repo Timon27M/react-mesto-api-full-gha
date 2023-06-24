@@ -50,7 +50,7 @@ function Main(props) {
               cardName={card.name}
               likeNumber={card.likes.length}
               onCardLike={props.onCardLike}
-              cardId={card.owner._id}
+              cardId={card.owner}
               onCardDelete={props.onCardDelete}
             />
           );
