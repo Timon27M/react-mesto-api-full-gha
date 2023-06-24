@@ -9,7 +9,7 @@
 
 ## Ссылки на проект
 
-IP-адрес 84.252.142.80
+IP 84.252.142.80
 
 Frontend https://tim27.nomoreparties.sbs/
 
