@@ -42,7 +42,6 @@ function App() {
       auth
         .getUserInfo(jwt)
         .then((res) => {
-          console.log(res);
           setIsLoggedIn(true);
           setEmail(res.user.email);
           navigate("/", { replace: true });
@@ -88,6 +87,7 @@ function App() {
     if (isLoggedIn === true) {
       Promise.all([api.getProfileInfo(), api.getInitialCards()])
         .then(([user, cards]) => {
+          console.log(user.user);
           setCurrentUser(user.user);
           setCards(cards.cards);
         })
@@ -211,7 +211,11 @@ function App() {
     api
       .setUserInfo(objUserInfo)
       .then((newUserInfo) => {
-        setCurrentUser(newUserInfo);
+        setCurrentUser((user) => {
+          user.name = newUserInfo.name;
+          user.about = newUserInfo.about;
+          return user;
+        })
         closeAllPopups();
       })
       .catch((err) => {
@@ -224,7 +228,11 @@ function App() {
     api
       .setUserAvatar(objUserAvatar)
       .then((newUserAvatar) => {
-        setCurrentUser(newUserAvatar);
+        setCurrentUser((user) => {
+          console.log(newUserAvatar)
+          user.avatar = newUserAvatar.avatar;
+          return user;
+        });
         closeAllPopups();
       })
       .catch((err) => {
