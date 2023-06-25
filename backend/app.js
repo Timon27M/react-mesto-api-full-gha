@@ -1,3 +1,4 @@
+require('dotenv').config();
 const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
@@ -17,7 +18,7 @@ const { requestLogger, errorLogger } = require('./middlewares/logger');
 const routesUser = require('./routes/users');
 const routesCard = require('./routes/cards');
 
-const { PORT = 3000 } = process.env;
+const { PORT, DB_URL } = process.env;
 
 const app = express();
 
@@ -45,8 +46,20 @@ app.use(errorLogger);
 app.use(errors());
 app.use(handlerError);
 
-mongoose.connect('mongodb://127.0.0.1:27017/mestodb');
+async function startApp() {
+  try {
+   mongoose.connect(DB_URL);
 
-app.listen(PORT, () => {
-  console.log(`Server ${PORT}`);
-});
+   console.log('Подключились к БАЗЕ ДАННЫХ')
+   app.listen(PORT, () => {
+     console.log(`Server ${PORT}`);
+    });
+  } catch {
+    console.log('Ошибка сервера');
+    process.exit(1)
+  }
+}
+
+startApp();
+
+
