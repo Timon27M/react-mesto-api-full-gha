@@ -38,9 +38,7 @@ app.use(auth);
 app.use('/', routesUser);
 app.use('/', routesCard);
 
-app.use('/', () => {
-  throw new NotFoundError('Произошла ошибка: Неправильный путь');
-});
+app.use('/', (req, res, next) => next(new NotFoundError('Произошла ошибка: Неправильный путь')));
 
 app.use(errorLogger);
 

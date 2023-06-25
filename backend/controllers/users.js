@@ -1,6 +1,5 @@
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
-const DefaultError = require('../errors/DefaultError');
 const BadRequestError = require('../errors/BadRequestError');
 const NotFoundError = require('../errors/NotFoundError');
 const UnauthorizedError = require('../errors/UnauthorizatedError');
@@ -15,9 +14,6 @@ const {
 const getUsers = (req, res, next) => {
   User.find({})
     .then((users) => res.send({ users }))
-    .catch((err) => {
-      throw new DefaultError(err.message);
-    })
     .catch(next);
 };
 
@@ -27,14 +23,13 @@ const getUser = (req, res, next) => {
     .then((user) => res.status(OK).send({ user }))
     .catch((err) => {
       if (err.name === 'CastError') {
-        throw new BadRequestError(err.message);
+        next(new BadRequestError(err.message));
       }
       if (err.name === 'DocumentNotFoundError') {
-        throw new NotFoundError(err.name);
+        next(new NotFoundError(err.name));
       }
-      throw new DefaultError(err.message);
-    })
-    .catch(next);
+      next(err);
+    });
 };
 
 const createUser = (req, res, next) => {
@@ -65,15 +60,14 @@ const createUser = (req, res, next) => {
     })
     .catch((err) => {
       if (err.code === 11000) {
-        throw new IncorrectEmailError('Пользователь с таким email уже существует');
+        next(new IncorrectEmailError('Пользователь с таким email уже существует'));
       }
 
       if (err.name === 'ValidationError') {
-        throw new BadRequestError(err.name);
+        next(new BadRequestError(err.name));
       }
-      throw new DefaultError(err.message);
-    })
-    .catch(next);
+      next(err);
+    });
 };
 
 const updateProfile = (req, res, next) => {
@@ -90,11 +84,10 @@ const updateProfile = (req, res, next) => {
     .then(() => res.status(OK).send({ name, about }))
     .catch((err) => {
       if (err.name === 'ValidationError') {
-        throw new BadRequestError(err.name);
+        next(new BadRequestError(err.name));
       }
-      throw new DefaultError(err.message);
-    })
-    .catch(next);
+      next(err);
+    });
 };
 
 const updateAvatar = (req, res, next) => {
@@ -107,11 +100,10 @@ const updateAvatar = (req, res, next) => {
     .then(() => res.status(OK).send({ avatar }))
     .catch((err) => {
       if (err.name === 'ValidationError') {
-        throw new BadRequestError(err.name);
+        next(new BadRequestError(err.name));
       }
-      throw new DefaultError(err.message);
-    })
-    .catch(next);
+      next(err);
+    });
 };
 
 const getCurrentUser = (req, res, next) => {
@@ -120,15 +112,11 @@ const getCurrentUser = (req, res, next) => {
       res.status(OK).send({ user });
     })
     .catch((err) => {
-      if (err.name === 'CastError') {
-        throw new BadRequestError(err.message);
-      }
       if (err.name === 'DocumentNotFoundError') {
-        throw new NotFoundError(err.name);
+        next(new NotFoundError(err.name));
       }
-      throw new DefaultError(err.message);
-    })
-    .catch(next);
+      next(err);
+    });
 };
 
 const login = (req, res, next) => {
@@ -140,9 +128,8 @@ const login = (req, res, next) => {
       res.send({ token });
     })
     .catch((err) => {
-      throw new UnauthorizedError(err.message);
-    })
-    .catch(next);
+      next(new UnauthorizedError(err.message));
+    });
 };
 
 module.exports = {

@@ -3,7 +3,6 @@ const {
   OK,
   CREATED,
 } = require('../сonstants/statusCode');
-const DefaultError = require('../errors/DefaultError');
 const BadRequestError = require('../errors/BadRequestError');
 const NotFoundError = require('../errors/NotFoundError');
 const ForbiddenError = require('../errors/ForbiddenError');
@@ -11,9 +10,6 @@ const ForbiddenError = require('../errors/ForbiddenError');
 const getCards = (req, res, next) => {
   Card.find({})
     .then((cards) => res.send({ cards }))
-    .catch((err) => {
-      throw new DefaultError(err.message);
-    })
     .catch(next);
 };
 
@@ -25,11 +21,10 @@ const createCard = (req, res, next) => {
     .then((newCard) => res.status(CREATED).send(newCard))
     .catch((err) => {
       if (err.name === 'ValidationError') {
-        throw new BadRequestError(err.message);
+        next(new BadRequestError(err.message));
       }
-      throw new DefaultError(err.message);
-    })
-    .catch(next);
+      next(err);
+    });
 };
 
 const deleteCard = (req, res, next) => {
@@ -41,10 +36,9 @@ const deleteCard = (req, res, next) => {
     })
     .then((card) => {
       if (card.owner.toString() === req.user._id) {
-        Card.findByIdAndRemove(cardId).then(() => res.status(200).send(card));
-      } else {
-        throw new ForbiddenError('В доступе отказано');
+        return Card.findByIdAndRemove(cardId).then(() => res.status(200).send(card));
       }
+      throw new ForbiddenError('В доступе отказано');
     })
     .catch(next);
 };
@@ -55,21 +49,19 @@ const likeCard = (req, res, next) => {
     { $addToSet: { likes: req.user._id } },
     {
       new: true,
-      runValidators: true,
     },
   )
     .orFail()
     .then((card) => res.status(OK).send(card))
     .catch((err) => {
       if (err.name === 'CastError') {
-        throw new BadRequestError(err.message);
+        next(new BadRequestError(err.message));
       }
       if (err.name === 'DocumentNotFoundError') {
-        throw new NotFoundError(err.message);
+        next(new NotFoundError(err.message));
       }
-      throw new DefaultError(err.message);
-    })
-    .catch(next);
+      next(err);
+    });
 };
 
 const dislikeCard = (req, res, next) => {
@@ -78,21 +70,19 @@ const dislikeCard = (req, res, next) => {
     { $pull: { likes: req.user._id } },
     {
       new: true,
-      runValidators: true,
     },
   )
     .orFail()
     .then((card) => res.status(OK).send(card))
     .catch((err) => {
       if (err.name === 'CastError') {
-        throw new BadRequestError(err.message);
+        next(new BadRequestError(err.message));
       }
       if (err.name === 'DocumentNotFoundError') {
-        throw new NotFoundError(err.message);
+        next(new NotFoundError(err.message));
       }
-      throw new DefaultError(err.message);
-    })
-    .catch(next);
+      next(err);
+    });
 };
 
 module.exports = {
