@@ -46,18 +46,8 @@ app.use(errorLogger);
 app.use(errors());
 app.use(handlerError);
 
-async function startApp() {
-  try {
-    mongoose.connect(DB_URL);
+mongoose.connect(DB_URL);
 
-    console.log('Подключились к БАЗЕ ДАННЫХ');
-    app.listen(PORT, () => {
-      console.log(`Server ${PORT}`);
-    });
-  } catch (error) {
-    console.log('Ошибка сервера');
-    process.exit(1);
-  }
-}
-
-startApp();
+app.listen(PORT, () => {
+  console.log(`Server ${PORT}`);
+});
