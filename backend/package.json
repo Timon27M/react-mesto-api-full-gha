@@ -2,7 +2,7 @@
   "name": "react-mesto-backend",
   "version": "0.1.0",
   "scripts": {
-    "start": "node --inspect app.js",
+    "start": "node app.js",
     "dev": "nodemon app.js",
     "lint": "npx eslint ."
   },
