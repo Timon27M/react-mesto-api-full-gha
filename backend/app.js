@@ -45,7 +45,6 @@ app.use(errorLogger);
 
 app.use(errors());
 app.use(handlerError);
-
 mongoose.connect(DB_URL);
 
 app.listen(PORT, () => {
