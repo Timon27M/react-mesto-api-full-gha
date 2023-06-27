@@ -35,6 +35,7 @@ app.get('/crash-test', () => {
 app.post('/signin', validatorLogin, login);
 app.post('/signup', validatorCreateUser, createUser);
 
+app.use(auth);
 app.use('/', routesUser);
 app.use('/', routesCard);
 
@@ -44,7 +45,6 @@ app.use(errorLogger);
 
 app.use(errors());
 app.use(handlerError);
-app.use(auth);
 mongoose.connect('mongodb://127.0.0.1:27017/mestodb');
 
 app.listen(PORT, () => {
