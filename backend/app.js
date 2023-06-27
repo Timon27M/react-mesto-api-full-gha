@@ -19,7 +19,7 @@ const { requestLogger, errorLogger } = require('./middlewares/logger');
 const routesUser = require('./routes/users');
 const routesCard = require('./routes/cards');
 
-const { PORT = 3000, DB_URL } = process.env;
+const { PORT = 3000 } = process.env;
 const app = express();
 
 app.use(bodyParser.json());
