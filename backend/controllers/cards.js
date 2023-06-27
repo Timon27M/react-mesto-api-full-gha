@@ -21,9 +21,9 @@ const createCard = (req, res, next) => {
     .then((newCard) => res.status(CREATED).send(newCard))
     .catch((err) => {
       if (err.name === 'ValidationError') {
-        next(new BadRequestError(err.message));
+        return next(new BadRequestError(err.message));
       }
-      next(err);
+      return next(err);
     });
 };
 
@@ -55,12 +55,12 @@ const likeCard = (req, res, next) => {
     .then((card) => res.status(OK).send(card))
     .catch((err) => {
       if (err.name === 'CastError') {
-        next(new BadRequestError(err.message));
+        return next(new BadRequestError(err.message));
       }
       if (err.name === 'DocumentNotFoundError') {
-        next(new NotFoundError(err.message));
+        return next(new NotFoundError(err.message));
       }
-      next(err);
+      return next(err);
     });
 };
 
@@ -76,12 +76,12 @@ const dislikeCard = (req, res, next) => {
     .then((card) => res.status(OK).send(card))
     .catch((err) => {
       if (err.name === 'CastError') {
-        next(new BadRequestError(err.message));
+        return next(new BadRequestError(err.message));
       }
       if (err.name === 'DocumentNotFoundError') {
-        next(new NotFoundError(err.message));
+        return next(new NotFoundError(err.message));
       }
-      next(err);
+      return next(err);
     });
 };
 

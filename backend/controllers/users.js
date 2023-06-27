@@ -2,7 +2,6 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const BadRequestError = require('../errors/BadRequestError');
 const NotFoundError = require('../errors/NotFoundError');
-const UnauthorizedError = require('../errors/UnauthorizatedError');
 const IncorrectEmailError = require('../errors/IncorrectEmailError');
 
 const User = require('../models/user');
@@ -23,12 +22,12 @@ const getUser = (req, res, next) => {
     .then((user) => res.status(OK).send({ user }))
     .catch((err) => {
       if (err.name === 'CastError') {
-        next(new BadRequestError(err.message));
+        return next(new BadRequestError(err.message));
       }
       if (err.name === 'DocumentNotFoundError') {
-        next(new NotFoundError(err.name));
+        return next(new NotFoundError(err.name));
       }
-      next(err);
+      return next(err);
     });
 };
 
@@ -60,13 +59,13 @@ const createUser = (req, res, next) => {
     })
     .catch((err) => {
       if (err.code === 11000) {
-        next(new IncorrectEmailError('Пользователь с таким email уже существует'));
+        return next(new IncorrectEmailError('Пользователь с таким email уже существует'));
       }
 
       if (err.name === 'ValidationError') {
-        next(new BadRequestError(err.name));
+        return next(new BadRequestError(err.name));
       }
-      next(err);
+      return next(err);
     });
 };
 
@@ -84,9 +83,9 @@ const updateProfile = (req, res, next) => {
     .then(() => res.status(OK).send({ name, about }))
     .catch((err) => {
       if (err.name === 'ValidationError') {
-        next(new BadRequestError(err.name));
+        return next(new BadRequestError(err.name));
       }
-      next(err);
+      return next(err);
     });
 };
 
@@ -100,9 +99,9 @@ const updateAvatar = (req, res, next) => {
     .then(() => res.status(OK).send({ avatar }))
     .catch((err) => {
       if (err.name === 'ValidationError') {
-        next(new BadRequestError(err.name));
+        return next(new BadRequestError(err.name));
       }
-      next(err);
+      return next(err);
     });
 };
 
@@ -113,9 +112,9 @@ const getCurrentUser = (req, res, next) => {
     })
     .catch((err) => {
       if (err.name === 'DocumentNotFoundError') {
-        next(new NotFoundError(err.name));
+        return next(new NotFoundError(err.name));
       }
-      next(err);
+      return next(err);
     });
 };
 
@@ -128,7 +127,7 @@ const login = (req, res, next) => {
       res.send({ token });
     })
     .catch((err) => {
-      next(new UnauthorizedError(err.message));
+      next(err);
     });
 };
 
