@@ -31,9 +31,9 @@ function App() {
   const [isInfoTooltipOpen, setIsInfoTooltipOpen] = useState(false);
   const [infoTooltipText, setInfoTooltipText] = useState("");
   const [infoTooltipLink, setInfoTooltipLink] = useState("");
-  
+
   const navigate = useNavigate();
-  
+
   // функция получения проверки
   useEffect(() => {
     const jwt = localStorage.getItem("jwt");
@@ -51,7 +51,7 @@ function App() {
         });
     }
   }, []);
-    
+
   useEffect(() => {
     if (isLoggedIn === true) {
       Promise.all([api.getProfileInfo(), api.getInitialCards()])
@@ -61,11 +61,10 @@ function App() {
         })
         .catch((err) => {
           closeAllPopups();
-          console.log(err)
+          console.log(err);
         });
     }
   }, [isLoggedIn]);
-
 
   // функция регистрации (отправка данных на сервер)
   function registerAuth(email, password) {
@@ -135,13 +134,14 @@ function App() {
         .likeCard(card._id)
         .then((newCard) => {
           setCards((state) =>
-          state.map((c) => (c._id === card._id ? newCard : c)))
-       })
+            state.map((c) => (c._id === card._id ? newCard : c))
+          );
+        })
         .catch((err) => {
           console.log(err);
         });
-      } else {
-        api
+    } else {
+      api
         .disLikeCard(card._id)
         .then((newCard) => {
           setCards((state) =>
@@ -181,7 +181,7 @@ function App() {
           user.name = newUserInfo.name;
           user.about = newUserInfo.about;
           return user;
-        })
+        });
         closeAllPopups();
       })
       .catch((err) => {
